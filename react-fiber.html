@@ -354,6 +354,111 @@
           <h2>Our issue?</h2>
           <h3 class="fragment">Limited scope of inputs covered</h3>
         </section>
+        <section data-transition="slide-in fade-out">
+          <pre class="javascript"><code data-trim data-noescape>
+import { isSubstring } from "./isSubstring";
+// isSubstring(text: string, word: string): boolean
+
+test("should check if word is a substring of text", () => {
+  expect(isSubstring("", "")).toBe(true);
+  expect(isSubstring("ab", "ab")).toBe(true);
+  expect(isSubstring("abcdef", "cd")).toBe(true);
+  expect(isSubstring("abcdef", "ab")).toBe(true);
+  expect(isSubstring("abcdef", "ef")).toBe(true);
+  expect(isSubstring("abcdef", "abd")).toBe(false);
+  expect(isSubstring("abcdef", "cef")).toBe(false);
+});
+          </code></pre>
+        </section>
+        <section data-transition="fade-in fade-out">
+          <pre class="javascript"><code data-trim data-noescape>
+import { isSubstring } from "./isSubstring";
+// isSubstring(text: string, word: string): boolean
+
+test("should check if word is a substring of text", () => {
+  expect(isSubstring("", "")).toBe(true);
+  expect(isSubstring("ab", "ab")).toBe(true);
+  expect(isSubstring("abcdef", "cd")).toBe(true);
+  expect(isSubstring("abcdef", "ab")).toBe(true);
+  expect(isSubstring("abcdef", "ef")).toBe(true);
+});
+          </code></pre>
+        </section>
+        <section data-transition="fade-in fade-out">
+          <pre class="javascript"><code data-trim data-noescape>
+import { isSubstring } from "./isSubstring";
+// isSubstring(text: string, word: string): boolean
+
+test("should check if word is a substring of text", () => {
+  expect(isSubstring("" + "" + "", "")).toBe(true);
+  expect(isSubstring("" + "ab" + "", "ab")).toBe(true);
+  expect(isSubstring("ab" + "cd" + "ef", "cd")).toBe(true);
+  expect(isSubstring("" + "ab" + "cdef", "ab")).toBe(true);
+  expect(isSubstring("abcd" + "ef" + "", "ef")).toBe(true);
+});
+          </code></pre>
+        </section>
+        <section data-transition="fade-in fade-out">
+          <pre class="javascript"><code data-trim data-noescape>
+import { isSubstring } from "./isSubstring";
+// isSubstring(text: string, word: string): boolean
+
+test("should check if word is a substring of text", () => {
+  expect(isSubstring(    "" + ""   + ""    , "")).toBe(true);
+  expect(isSubstring(    "" + "ab" + ""    , "ab")).toBe(true);
+  expect(isSubstring(  "ab" + "cd" + "ef"  , "cd")).toBe(true);
+  expect(isSubstring(    "" + "ab" + "cdef", "ab")).toBe(true);
+  expect(isSubstring("abcd" + "ef" + ""    , "ef")).toBe(true);
+});
+          </code></pre>
+        </section>
+        <section data-transition="fade-in fade-out">
+          <pre class="javascript"><code data-trim data-noescape>
+import { isSubstring } from "./isSubstring";
+// isSubstring(text: string, word: string): boolean
+
+test.each`
+  a         | b       | c
+  ${""}     | ${""}   | ${""}
+  ${""}     | ${"ab"} | ${""}
+  ${"ab"}   | ${"cd"} | ${"ef"}
+  ${""}     | ${"ab"} | ${"cdef"}
+  ${"abcd"} | ${"ef"} | ${""}
+`("should check if word is a substring of text", ({a, b, c}) => {
+  expect(isSubstring(a + b + c, b)).toBe(true);
+});
+          </code></pre>
+        </section>
+        <section>
+          <p class="quote-right fragment">
+            for all <em>a, b, c strings</em> <br /><em>b</em> is a substring of
+            <em>a + b + c</em>
+          </p>
+          <div
+            style="display: flex; flex-direction: row; justify-content: center;"
+          >
+            <div style="padding: 24px;">
+              <p style="font-size: 1.5em;">"<em>aze</em>"</p>
+              <p style="font-size: 0.7em;">a</p>
+            </div>
+            <div style="padding: 24px;">
+              <p style="font-size: 1.5em;">+</p>
+              <p style="font-size: 0.7em;">&nbsp;</p>
+            </div>
+            <div style="padding: 24px;">
+              <p style="font-size: 1.5em;">"<em>rt</em>"</p>
+              <p style="font-size: 0.7em;">b</p>
+            </div>
+            <div style="padding: 24px;">
+              <p style="font-size: 1.5em;">+</p>
+              <p style="font-size: 0.7em;">&nbsp;</p>
+            </div>
+            <div style="padding: 24px;">
+              <p style="font-size: 1.5em;">"<em>y</em>"</p>
+              <p style="font-size: 0.7em;">c</p>
+            </div>
+          </div>
+        </section>
         <section>
           <h2>Going random…</h2>
           <h3 class="fragment">But reproducible way</h3>
