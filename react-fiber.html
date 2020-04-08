@@ -193,7 +193,7 @@
           </div>
           <h1>Detecting the unexpected in Web UI</h1>
           <h2 class="fragment custom-collapse">
-            Let's talk about race-conditions
+            Let's talk about race conditions
           </h2>
           <h3>Nicolas DUBIEN</h3>
           <p class="vsmallnote">
@@ -227,7 +227,7 @@
           </script>
         </section>
         <section>
-          <h2>Race-condition?</h2>
+          <h2>Race condition?</h2>
           <p class="quote">
             <span
               class="fragment highlight-transparent visible"
@@ -486,6 +486,112 @@ test.each`
           <pre class="javascript"><code data-trim data-noescape>
           </code></pre>
         </section>-->
+        <section>
+          <!--
+            Let's go back to race conditions
+            Let's take the case of a simple autocomplete field like this one
+            But fed from an API - like searches and suggestions in your favorite search engine (eg.: Google)
+          -->
+          <h2>🔙 Back to race conditions</h2>
+          <h3 class="fragment custom-collapse">
+            With a simple autocomplete field in React
+          </h3>
+        </section>
+        <section>
+          <!--
+            Here is a footage of an autocomplete field
+          -->
+          <img
+            src="./images/autocomplete-ok.gif"
+            style="border: none; background: none; margin: 0px;"
+          />
+        </section>
+        <section>
+          <!--
+            What can go wrong with it?
+            Hmmmm... Actually many things
+            Do you remember what can cause a race condition according to the definition from Wikipedia?
+          -->
+          <h3>What can go wrong with it?</h3>
+        </section>
+        <section>
+          <!--
+            Uncontrolled events!
+            What can be the "uncontrolled events" in our case?
+          -->
+          <p class="quote">
+            <span
+              class="fragment highlight-transparent visible"
+              data-fragment-index="1"
+              >A race condition […] is the condition […] where the system's
+              substantive behavior is dependent on the </span
+            ><span
+              class="fragment highlight-green visible"
+              data-fragment-index="1"
+              >sequence</span
+            ><span
+              class="fragment highlight-transparent visible"
+              data-fragment-index="1"
+            >
+              or timing </span
+            ><span
+              class="fragment highlight-green visible"
+              data-fragment-index="1"
+              >of</span
+            ><span
+              class="fragment highlight-transparent visible"
+              data-fragment-index="1"
+            >
+              other </span
+            ><span
+              class="fragment highlight-green visible"
+              data-fragment-index="1"
+              >uncontrollable events</span
+            ><span
+              class="fragment highlight-transparent visible"
+              data-fragment-index="1"
+              >.</span
+            >
+          </p>
+          <p class="vsmallnote">
+            Source:
+            <a
+              href="https://en.wikipedia.org/wiki/Race_condition"
+              target="_blank"
+              >https://en.wikipedia.org/wiki/Race_condition</a
+            >
+          </p>
+        </section>
+        <section>
+          <!--
+            - Interactions with the user:
+              - More precisely for this case: user typings stuff in the field
+            - Network delays:
+              - Slow network
+              - BUT also: some servers or requests might be slower than others
+          -->
+          <h3>
+            Our
+            <span style="color: rgb(23, 255, 46);">uncontrolled events</span>:
+          </h3>
+          <ul>
+            <li class="fragment">Interactions with the user</li>
+            <li class="fragment">Network delays</li>
+          </ul>
+        </section>
+        <section>
+          <!--
+            And here is what you can get if you just delay a bit
+            when the query resolves in the autocomplete above
+
+            But how can we prevent from such issue?
+            Let's build our own autocomplete and see we would usually test it
+          -->
+          <img
+            src="./images/autocomplete-bug.gif"
+            style="border: none; background: none; margin: 0px;"
+          />
+        </section>
         <section>
           <h2>Questions?</h2>
           <div style="margin-top: 48px;"></div>
