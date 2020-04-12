@@ -400,6 +400,10 @@
               <img src="./images/twitter.png" style="height: 32px; border: none; background: none; margin: 0px;" />
               ndubien
             </div>
+			<div style="color: #cb3837; vertical-align: middle;">
+			  <img src="./images/npm.png" style="height: 32px; border: none; background: none; margin: 0px;" />
+			  fast-check
+			</div>
           </div>
         </section>
         <section>
@@ -618,7 +622,7 @@ test('should autocomplete queries', async () =&gt; {
   const expectedResults = ['banana'];
   
   // Act
-  const { getByRole, getAllByRole } = render(&lt;Autocomplete /&gt;);
+  const { getByRole, queryAllByRole } = render(&lt;Autocomplete /&gt;);
   await act(async () =&gt; {
     await userEvent.type(
 	  getByRole('textbox'),
@@ -627,7 +631,7 @@ test('should autocomplete queries', async () =&gt; {
   });
   
   // Assert
-  const displayedSuggestions = getAllByRole('listitem')
+  const displayedSuggestions = queryAllByRole('listitem')
       .map((el) =&gt; el.textContent);
   expect(displayedSuggestions).toEqual(expectedResults);
   expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
@@ -743,7 +747,7 @@ test('should autocomplete queries', async () =&gt; {
 		</section>
 		<section class="fullScreen">
 			<aside class="notes"></aside>
-			<pre><code class="hljs javascript" data-trim data-line-numbers="1-29|4-6,8,10-19,21-26|2,3,27,28|7-9|20|2,3,27,28,7-9,20">
+			<pre><code class="hljs javascript" data-trim data-line-numbers="1-29|1,4-6,8,10-19,21-26,29|2,3,27,28|7-9|20|2,3,27,28,7-9,20">
 test('should autocomplete queries', async () =&gt; {
   await fc.assert(
     fc.asyncProperty(fc.scheduler({ act }), async (s) =&gt; {
@@ -758,7 +762,7 @@ test('should autocomplete queries', async () =&gt; {
       const expectedResults = ['banana'];
       
       // Act
-      const { getByRole, getAllByRole } = render(&lt;Autocomplete /&gt;);
+      const { getByRole, queryAllByRole } = render(&lt;Autocomplete /&gt;);
       await act(async () =&gt; {
         await userEvent.type(getByRole('textbox'),
           userQuery, { allAtOnce: false, delay: 1 });
@@ -766,7 +770,7 @@ test('should autocomplete queries', async () =&gt; {
       await s.waitAll();
       
       // Assert
-      const displayedSuggestions = getAllByRole('listitem')
+      const displayedSuggestions = queryAllByRole('listitem')
           .map((el) =&gt; el.textContent);
       expect(displayedSuggestions).toEqual(expectedResults);
       expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
@@ -807,6 +811,172 @@ Got error: Error: expect(received).toEqual(expected) // deep equality
 +     "orange",
 +     "pineapple",
   ]
+			</code></pre>
+		</section>
+		<section class="fullScreen" data-transition="slide-in fade-out">
+			<aside class="notes"></aside>
+			<pre><code class="hljs javascript" data-trim data-line-numbers="1-29|12">
+test('should autocomplete queries', async () =&gt; {
+  await fc.assert(
+    fc.asyncProperty(fc.scheduler({ act }), async (s) =&gt; {
+      // Arrange
+      const allResults = ['apple', 'banana', 'orange', 'pineapple'];
+      suggestionsFor.mockImplementation(
+        s.scheduleFunction(async (query) =&gt; {
+          return allResults.filter((r) =&gt; r.includes(query));
+        })
+      );
+      const userQuery = 'nan';
+      const expectedResults = ['banana'];
+      
+      // Act
+      const { getByRole, queryAllByRole } = render(&lt;Autocomplete /&gt;);
+      await act(async () =&gt; {
+        await userEvent.type(getByRole('textbox'),
+          userQuery, { allAtOnce: false, delay: 1 });
+      });
+      await s.waitAll();
+      
+      // Assert
+      const displayedSuggestions = queryAllByRole('listitem')
+          .map((el) =&gt; el.textContent);
+      expect(displayedSuggestions).toEqual(expectedResults);
+      expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
+    }).beforeEach(() =&gt; {/* same as beforeEach */})
+  );
+});
+			</code></pre>
+		</section>
+		<section class="fullScreen" data-transition="fade-in fade-out">
+			<aside class="notes"></aside>
+			<pre><code class="hljs javascript" data-trim data-line-numbers="12,13|11">
+test('should autocomplete queries', async () =&gt; {
+  await fc.assert(
+    fc.asyncProperty(fc.scheduler({ act }), async (s) =&gt; {
+      // Arrange
+      const allResults = ['apple', 'banana', 'orange', 'pineapple'];
+      suggestionsFor.mockImplementation(
+        s.scheduleFunction(async (query) =&gt; {
+          return allResults.filter((r) =&gt; r.includes(query));
+        })
+      );
+      const userQuery = 'nan';
+      const expectedResults = allResults
+          .filter((r) =&gt; r.includes(userQuery));
+      
+      // Act
+      const { getByRole, queryAllByRole } = render(&lt;Autocomplete /&gt;);
+      await act(async () =&gt; {
+        await userEvent.type(getByRole('textbox'),
+          userQuery, { allAtOnce: false, delay: 1 });
+      });
+      await s.waitAll();
+      
+      // Assert
+      const displayedSuggestions = queryAllByRole('listitem')
+          .map((el) =&gt; el.textContent);
+      expect(displayedSuggestions).toEqual(expectedResults);
+      expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
+    }).beforeEach(() =&gt; {/* same as beforeEach */})
+  );
+});
+			</code></pre>
+		</section>
+		<section class="fullScreen" data-transition="fade-in fade-out">
+			<aside class="notes"></aside>
+			<pre><code class="hljs javascript" data-trim data-line-numbers="4,5|7">
+test('should autocomplete queries', async () =&gt; {
+  await fc.assert(
+    fc.asyncProperty(fc.scheduler({ act })
+                   , fc.string(1, 10)
+                   , async (s, userQuery) =&gt; {
+      // Arrange
+      const allResults = ['apple', 'banana', 'orange', 'pineapple'];
+      suggestionsFor.mockImplementation(
+        s.scheduleFunction(async (query) =&gt; {
+          return allResults.filter((r) =&gt; r.includes(query));
+        })
+      );
+      const expectedResults = allResults
+          .filter((r) =&gt; r.includes(userQuery));
+      
+      // Act
+      const { getByRole, queryAllByRole } = render(&lt;Autocomplete /&gt;);
+      await act(async () =&gt; {
+        await userEvent.type(getByRole('textbox'),
+          userQuery, { allAtOnce: false, delay: 1 });
+      });
+      await s.waitAll();
+      
+      // Assert
+      const displayedSuggestions = queryAllByRole('listitem')
+          .map((el) =&gt; el.textContent);
+      expect(displayedSuggestions).toEqual(expectedResults);
+      expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
+    }).beforeEach(() =&gt; {/* same as beforeEach */})
+  );
+});
+			</code></pre>
+		</section>
+		<section class="fullScreen" data-transition="fade-in slide-out">
+			<aside class="notes"></aside>
+			<pre><code class="hljs javascript" data-trim data-line-numbers="4,6|1-200">
+test('should autocomplete queries', async () =&gt; {
+  await fc.assert(
+	fc.asyncProperty(fc.scheduler({ act })
+                   , fc.set(fc.string())
+                   , fc.string(1, 10)
+                   , async (s, allResults, userQuery) =&gt; {
+      // Arrange
+      suggestionsFor.mockImplementation(
+        s.scheduleFunction(async (query) =&gt; {
+          return allResults.filter((r) =&gt; r.includes(query));
+        })
+      );
+      const expectedResults = allResults
+          .filter((r) =&gt; r.includes(userQuery));
+      
+      // Act
+      const { getByRole, queryAllByRole } = render(&lt;Autocomplete /&gt;);
+      await act(async () =&gt; {
+        await userEvent.type(getByRole('textbox'),
+          userQuery, { allAtOnce: false, delay: 1 });
+      });
+      await s.waitAll();
+      
+      // Assert
+      const displayedSuggestions = queryAllByRole('listitem')
+          .map((el) =&gt; el.textContent);
+      expect(displayedSuggestions).toEqual(expectedResults);
+      expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
+    }).beforeEach(() =&gt; {/* same as beforeEach */})
+  );
+});
+			</code></pre>
+		</section>
+		
+		<section class="fullScreen">
+			<aside class="notes"></aside>
+			<pre><code class="hljs text" data-trim>
+Property failed after 2 tests
+{ seed: -1614603237, path: "1:[...]:2", endOnFailure: true }
+
+Counterexample: [
+  Scheduler`
+    -> [task#2] function::("aa") resolved with value []
+    -> [task#1] function::("a") resolved with value ["a"]
+  `,["a"],"aa"]
+
+Shrunk 33 time(s)
+Got error: Error: expect(received).toEqual(expected) // deep equality
+
+- Expected
++ Received
+
+- Array []
++ Array [
++   "a",
++ ]
 			</code></pre>
 		</section>
         <section>
