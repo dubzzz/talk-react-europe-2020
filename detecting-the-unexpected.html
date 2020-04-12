@@ -222,6 +222,13 @@
     <div class="reveal">
       <div class="slides">
         <section>
+          <!--
+            Hey, hello everyone I'm Nicolas
+            Before introducing myself more precisely.
+            Let's first see what we are gonna discuss in this talk.
+            Today we will talk about "Detecting the unexpecting" and we will
+            mostly focus on 'unexpected' behaviour that can happen in the front.
+          -->
           <div>
             <img
               src="./images/react-europe.webp"
@@ -230,23 +237,106 @@
             />
           </div>
           <h1>Detecting the unexpected in Web UI</h1>
-          <h2 class="fragment custom-collapse">
-            Let's talk about race conditions
-          </h2>
           <h3>Nicolas DUBIEN</h3>
           <p class="vsmallnote">
             React-Europe
           </p>
         </section>
         <section>
+          <!--
+            But first, let's define what we can be 'unexpected'.
+            It happened to all of us (or at least it will): we've worked hard for days, months or maybe years.
+            We have highly covered the scenarii with tests (or maybe not).
+            But we are pretty confident that the project will be good enough and error prone.
+            But even with all those guards, one day it happened, a bug is reported...
+          -->
           <h1>One day, it happened…</h1>
         </section>
         <section>
+          <!--
+            And you feel a bit like this little dog.
+            All your efforts ruined in a few seconds as you were just reaching the graal.
+          -->
           <video controls width="100%" style="cursor: default;">
             <source src="./images/boom.webm" type="video/webm" />
           </video>
         </section>
         <section>
+          <!--
+            There are many kind of 'unexpected' we can think about...
+            They goes from security issues like this bug in Android
+
+            In a nutshell with the scenario on the right side you were able to by-pass the lockscreen
+            and open any Android device without knowing the password.
+          -->
+          <div style="display: grid; grid-template-columns: 30% auto; column-gap: 50px;">
+            <div>
+              <img
+                src="./images/lockscreen-guardian.png"
+                alt="Android issue with lockscreen"
+                style="background: none; border: none; box-shadow: none;"
+              />
+            </div>
+            <div>
+              <p class="quote">
+                0- Lock your screen
+                <br />1- Open the EMERGENCY CALL window <br />2- Type a few characters <br />3- Select them and
+                copy-paste until no longer highlights <br />4- Go back to the lockscreen <br />5- Open the camera
+                <br />6- Open the notification drawer <br />7- Tap the Settings (gear) icon <br />8- Long-tap in the
+                password field and paste the characters into it until it crashes 💥
+              </p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <!--
+            Or more recently this one in facetime
+            that allowed you to start the call
+            before the person on the other side even accepted it
+          -->
+          <div style="display: grid; grid-template-columns: auto 30%; column-gap: 50px;">
+            <div>
+              <p class="quote-right">
+                0- Start a FaceTime video call
+                <br />1- Swipe up <br />2- Tap 'Add Person' before the call is answered <br />3- Add yourself - you'll
+                be able to listen to the person on the other end before they accept the call 💥
+              </p>
+            </div>
+            <div>
+              <img
+                src="./images/facetime-nyt.png"
+                alt="FaceTime issue"
+                style="background: none; border: none; box-shadow: none;"
+              />
+            </div>
+          </div>
+        </section>
+        <section>
+          <!--
+            Or those strange glitches in the UI that can, in this case, be funny.
+
+            But can be highly problematic if it happens on the website of your bank or on the plaform you use
+            to schedule your sprints, prepare your expenses...
+
+            Just imagine, a UI glich telling you the operation was succesful while it tells you about another operation,
+            a add to cart that adds another product, or a remove from cart that only removes visually from the cart...
+          -->
+          <img
+            src="./images/autocomplete-bug-screenshot.png"
+            alt="Buggy autocomplete"
+            style="background: none; border: none; box-shadow: none;"
+          />
+        </section>
+        <section>
+          <!--
+            A bit like this one...
+
+            The common piece between all those bugs is that they are pretty difficult to detect
+            And sometimes even impossible to reproduce or debug
+
+            Either because the scenario is not well defined or understood
+            Or because the bug is caused by bad network conditions, slow computers or random ordering of events...
+          -->
           <img id="navigation-hell" alt="Navigation hell" src="./images/navigation-hell.gif" onclick="resetGif()" />
           <script>
             function resetGif() {
@@ -256,49 +346,11 @@
           </script>
         </section>
         <section>
-          <h2>Race condition?</h2>
-          <p class="quote">
-            <span class="fragment highlight-transparent visible" data-fragment-index="1"
-              >A race condition […] is the condition […] where the system's substantive behavior is dependent on the </span
-            ><span class="fragment highlight-green visible" data-fragment-index="1">sequence</span
-            ><span class="fragment highlight-transparent visible" data-fragment-index="1"> or timing </span
-            ><span class="fragment highlight-green visible" data-fragment-index="1">of</span
-            ><span class="fragment highlight-transparent visible" data-fragment-index="1"> other </span
-            ><span class="fragment highlight-green visible" data-fragment-index="1">uncontrollable events</span
-            ><span class="fragment highlight-transparent visible" data-fragment-index="1">.</span>
-          </p>
-          <p class="fragment custom-collapse">
-            🤔 What about user inputs, API calls…?
-          </p>
-          <p class="vsmallnote">
-            Source:
-            <a href="https://en.wikipedia.org/wiki/Race_condition" target="_blank"
-              >https://en.wikipedia.org/wiki/Race_condition</a
-            >
-          </p>
-        </section>
-        <section>
-          <img src="./images/test-pyramid.png" style="border: none; background: none; box-shadow: none;" />
-        </section>
-        <section>
-          <h3>Unit test</h3>
-          <img src="./images/unit-test-example.png" />
-        </section>
-        <section>
-          <h3>E2E test</h3>
-          <img src="./images/e2e-test-example.png" />
-        </section>
-        <section>
-          <h2>Are we sure to cover everything?</h2>
-          <h3 class="fragment">Yes, all my users are happy</h3>
-          <h3 class="fragment">Yes, I have 100% coverage</h3>
-        </section>
-        <section>
-          <img src="images/coverage.jpg" />
-          <p><em>100% coverage</em></p>
-        </section>
-        <section>
-          <h2>Not enough…</h2>
+          <!--
+            Today we will speak of a really rare subject in the front:
+            Race Conditions
+          -->
+          <h2>Let's talk about race conditions</h2>
         </section>
         <section>
           <div>
@@ -323,6 +375,51 @@
               ndubien
             </div>
           </div>
+        </section>
+        <section>
+          <h2>Race condition?</h2>
+          <p class="quote">
+            <span class="fragment highlight-transparent visible" data-fragment-index="1"
+              >A race condition […] is the condition […] where the system's substantive behavior is dependent on the </span
+            ><span class="fragment highlight-green visible" data-fragment-index="1">sequence</span
+            ><span class="fragment highlight-transparent visible" data-fragment-index="1"> or timing </span
+            ><span class="fragment highlight-green visible" data-fragment-index="1">of</span
+            ><span class="fragment highlight-transparent visible" data-fragment-index="1"> other </span
+            ><span class="fragment highlight-green visible" data-fragment-index="1">uncontrollable events</span
+            ><span class="fragment highlight-transparent visible" data-fragment-index="1">.</span>
+          </p>
+          <p class="fragment custom-collapse">
+            🤔 What about user inputs, API calls…?
+          </p>
+          <p class="vsmallnote">
+            Source:
+            <a href="https://en.wikipedia.org/wiki/Race_condition" target="_blank"
+              >https://en.wikipedia.org/wiki/Race_condition</a
+            >
+          </p>
+        </section>
+        <!--<section>
+          <img src="./images/test-pyramid.png" style="border: none; background: none; box-shadow: none;" />
+        </section>
+        <section>
+          <h3>Unit test</h3>
+          <img src="./images/unit-test-example.png" />
+        </section>
+        <section>
+          <h3>E2E test</h3>
+          <img src="./images/e2e-test-example.png" />
+        </section>
+        <section>
+          <h2>Are we sure to cover everything?</h2>
+          <h3 class="fragment">Yes, all my users are happy</h3>
+          <h3 class="fragment">Yes, I have 100% coverage</h3>
+        </section>
+        <section>
+          <img src="images/coverage.jpg" />
+          <p><em>100% coverage</em></p>
+        </section>
+        <section>
+          <h2>Not enough…</h2>
         </section>
         <section>
           <h2>Our issue?</h2>
@@ -435,7 +532,6 @@ test.each`
           <h2>Going random…</h2>
           <h3 class="fragment">But reproducible way</h3>
           <h3 class="fragment">Not deterministic</h3>
-          <!-- we want to cover new cases at each run -->
         </section>
         <section>
           <h2>Wait a minute… 😓</h2>
@@ -447,7 +543,7 @@ test.each`
             "<em>.D0xjkFI{&lt;:nx#U3lI~</em>", "<em>j&gt;~&]&/'0Fw{?O</em>"
           </h3>
           <h3 class="fragment">[983 characters], [1302 characters]</h3>
-        </section>
+        </section>-->
         <!--<section data-transition="slide-in fade-out">
           <img src="images/rec-1.png" />
         </section>
