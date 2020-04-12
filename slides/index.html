@@ -182,6 +182,27 @@
         transition: opacity 0.3s ease-in;
       }
 
+      .reveal .slides section.fullScreen {
+        top: unset;
+        padding: unset;
+      }
+      .reveal .slides section.fullScreen code {
+        max-height: unset;
+        max-width: unset;
+      }
+
+      /* It seems that there is a syntax highlighting bug when using data-line-numbers */
+      section code[data-line-numbers]:not([data-fragment-index]),
+      section code[data-line-numbers][data-fragment-index]:not(.current-fragment) {
+        opacity: 0 !important;
+        transition: all 0.2s ease;
+      }
+      section[data-fragment='-1'] code[data-line-numbers]:not([data-fragment-index]),
+      section code[data-line-numbers][data-fragment-index].current-fragment {
+        opacity: 1 !important;
+        transition: all 0.2s ease;
+      }
+
       @font-face {
         font-family: 'Virgil';
         src: url('./lib/font/FG_Virgil.woff2');
@@ -327,22 +348,18 @@
         </section>
         <section>
           <aside class="notes">
-            Or those strange glitches in the UI that can, in this case, be funny. But can be highly problematic if it
-            happens on the website of your bank or on the plaform you use to schedule your sprints, prepare your
-            expenses... Just imagine, a UI glich telling you the operation was succesful while it tells you about
-            another operation, a add to cart that adds another product, or a remove from cart that only removes visually
-            from the cart...
-          </aside>
-          <img
-            src="./images/autocomplete-bug-screenshot.png"
-            alt="Buggy autocomplete"
-            style="background: none; border: none; box-shadow: none;"
-          />
-        </section>
-        <section>
-          <aside class="notes">
-            A bit like this one... The common piece between all those bugs is that they are pretty difficult to detect
-            And sometimes even impossible to reproduce or debug Either because the scenario is not well defined or
+            This one is a bit different and need some more context.
+            <br />I initially looked for an stay in Paris on a famous travel website. <br />Then I suddenly changed my
+            mind. I live in Paris. So I moved for a stay in London. <br />And here were the suggestions. <br />BUT as I
+            was browsing the suggestions, suddenly my first query went back.
+            <br />
+            <br />You might say: 'Ok, but this kind of bug is not really harmful...' <br />
+            But let's imagine the same thing happens on the front of your bank or on the plaform you use to schedule
+            your sprints, prepare your expenses... Just imagine, a UI glich telling you the operation was succesful
+            while it tells you about another operation, a add to cart that adds another product, or a remove from cart
+            that only removes visually from the cart...
+            <br /><br />The common thing between all those bugs is that they are pretty difficult to detect And
+            sometimes even impossible to reproduce or debug Either because the scenario is not well defined or
             understood Or because the bug is caused by bad network conditions, slow computers or random ordering of
             events...
           </aside>
@@ -361,10 +378,7 @@
           <h2>Let's talk about race conditions</h2>
         </section>
         <section>
-          <!--
-				TODO:
-				fast-check more visible
-			-->
+          <aside class="notes"></aside>
           <div>
             <img src="./images/me.jpg" style="border-radius: 50%; height: 128px;" />
           </div>
@@ -389,6 +403,11 @@
           </div>
         </section>
         <section>
+          <aside class="notes">
+            But what is a race condition? <br />As I first said, race conditions are often said to be reserved to the
+            back. <br />But if you take a closer look to the definition on Wikipedia they are also clearly a real
+            problem for us in the front.
+          </aside>
           <h2>Race condition?</h2>
           <p class="quote">
             <span class="fragment highlight-transparent visible" data-fragment-index="1"
@@ -410,225 +429,215 @@
             >
           </p>
         </section>
-        <!--<section>
-		<img src="./images/test-pyramid.png" style="border: none; background: none; box-shadow: none;" />
-	  </section>
-	  <section>
-		<h3>Unit test</h3>
-		<img src="./images/unit-test-example.png" />
-	  </section>
-	  <section>
-		<h3>E2E test</h3>
-		<img src="./images/e2e-test-example.png" />
-	  </section>
-	  <section>
-		<h2>Are we sure to cover everything?</h2>
-		<h3 class="fragment">Yes, all my users are happy</h3>
-		<h3 class="fragment">Yes, I have 100% coverage</h3>
-	  </section>
-	  <section>
-		<img src="images/coverage.jpg" />
-		<p><em>100% coverage</em></p>
-	  </section>
-	  <section>
-		<h2>Not enough…</h2>
-	  </section>
-	  <section>
-		<h2>Our issue?</h2>
-		<h3 class="fragment">Limited scope of inputs covered</h3>
-	  </section>
-	  <section data-transition="slide-in fade-out">
-		<pre class="javascript"><code data-trim data-noescape>
-import { isSubstring } from "./isSubstring";
-// isSubstring(text: string, word: string): boolean
-
-test("should check if word is a substring of text", () => {
-expect(isSubstring("", "")).toBe(true);
-expect(isSubstring("ab", "ab")).toBe(true);
-expect(isSubstring("abcdef", "cd")).toBe(true);
-expect(isSubstring("abcdef", "ab")).toBe(true);
-expect(isSubstring("abcdef", "ef")).toBe(true);
-expect(isSubstring("abcdef", "abd")).toBe(false);
-expect(isSubstring("abcdef", "cef")).toBe(false);
-});
-		</code></pre>
-	  </section>
-	  <section data-transition="fade-in fade-out">
-		<pre class="javascript"><code data-trim data-noescape>
-import { isSubstring } from "./isSubstring";
-// isSubstring(text: string, word: string): boolean
-
-test("should check if word is a substring of text", () => {
-expect(isSubstring("", "")).toBe(true);
-expect(isSubstring("ab", "ab")).toBe(true);
-expect(isSubstring("abcdef", "cd")).toBe(true);
-expect(isSubstring("abcdef", "ab")).toBe(true);
-expect(isSubstring("abcdef", "ef")).toBe(true);
-});
-		</code></pre>
-	  </section>
-	  <section data-transition="fade-in fade-out">
-		<pre class="javascript"><code data-trim data-noescape>
-import { isSubstring } from "./isSubstring";
-// isSubstring(text: string, word: string): boolean
-
-test("should check if word is a substring of text", () => {
-expect(isSubstring("" + "" + "", "")).toBe(true);
-expect(isSubstring("" + "ab" + "", "ab")).toBe(true);
-expect(isSubstring("ab" + "cd" + "ef", "cd")).toBe(true);
-expect(isSubstring("" + "ab" + "cdef", "ab")).toBe(true);
-expect(isSubstring("abcd" + "ef" + "", "ef")).toBe(true);
-});
-		</code></pre>
-	  </section>
-	  <section data-transition="fade-in fade-out">
-		<pre class="javascript"><code data-trim data-noescape>
-import { isSubstring } from "./isSubstring";
-// isSubstring(text: string, word: string): boolean
-
-test("should check if word is a substring of text", () => {
-expect(isSubstring(    "" + ""   + ""    , "")).toBe(true);
-expect(isSubstring(    "" + "ab" + ""    , "ab")).toBe(true);
-expect(isSubstring(  "ab" + "cd" + "ef"  , "cd")).toBe(true);
-expect(isSubstring(    "" + "ab" + "cdef", "ab")).toBe(true);
-expect(isSubstring("abcd" + "ef" + ""    , "ef")).toBe(true);
-});
-		</code></pre>
-	  </section>
-	  <section data-transition="fade-in fade-out">
-		<pre class="javascript"><code data-trim data-noescape>
-import { isSubstring } from "./isSubstring";
-// isSubstring(text: string, word: string): boolean
-
-test.each`
-a         | b       | c
-${""}     | ${""}   | ${""}
-${""}     | ${"ab"} | ${""}
-${"ab"}   | ${"cd"} | ${"ef"}
-${""}     | ${"ab"} | ${"cdef"}
-${"abcd"} | ${"ef"} | ${""}
-`("should check if word is a substring of text", ({a, b, c}) => {
-expect(isSubstring(a + b + c, b)).toBe(true);
-});
-		</code></pre>
-	  </section>
-	  <section>
-		<p class="quote-right fragment">
-		  for all <em>a, b, c strings</em> <br /><em>b</em> is a substring of
-		  <em>a + b + c</em>
-		</p>
-		<div style="display: flex; flex-direction: row; justify-content: center;">
-		  <div style="padding: 24px;">
-			<p style="font-size: 1.5em;">"<em>aze</em>"</p>
-			<p style="font-size: 0.7em;">a</p>
-		  </div>
-		  <div style="padding: 24px;">
-			<p style="font-size: 1.5em;">+</p>
-			<p style="font-size: 0.7em;">&nbsp;</p>
-		  </div>
-		  <div style="padding: 24px;">
-			<p style="font-size: 1.5em;">"<em>rt</em>"</p>
-			<p style="font-size: 0.7em;">b</p>
-		  </div>
-		  <div style="padding: 24px;">
-			<p style="font-size: 1.5em;">+</p>
-			<p style="font-size: 0.7em;">&nbsp;</p>
-		  </div>
-		  <div style="padding: 24px;">
-			<p style="font-size: 1.5em;">"<em>y</em>"</p>
-			<p style="font-size: 0.7em;">c</p>
-		  </div>
-		</div>
-	  </section>
-	  <section>
-		<h2>Going random…</h2>
-		<h3 class="fragment">But reproducible way</h3>
-		<h3 class="fragment">Not deterministic</h3>
-	  </section>
-	  <section>
-		<h2>Wait a minute… 😓</h2>
-		<h3 class="fragment">Random?</h3>
-	  </section>
-	  <section>
-		<h2>What if the reported error is:</h2>
-		<h3 class="fragment">
-		  "<em>.D0xjkFI{&lt;:nx#U3lI~</em>", "<em>j&gt;~&]&/'0Fw{?O</em>"
-		</h3>
-		<h3 class="fragment">[983 characters], [1302 characters]</h3>
-	  </section>-->
-        <!--<section data-transition="slide-in fade-out">
-		<img src="images/rec-1.png" />
-	  </section>
-	  <section data-transition="fade-in fade-out">
-		<img src="images/rec-2.png" />
-	  </section>
-	  <section>
-		<pre class="javascript"><code data-trim data-noescape>
-		</code></pre>
-	  </section>-->
         <section>
-          <!--
-		  Let's go back to race conditions
-		  Let's take the case of a simple autocomplete field like this one
-		  But fed from an API - like searches and suggestions in your favorite search engine (eg.: Google)
-		-->
-          <h2>🔙 Back to race conditions</h2>
+          <aside class="notes">
+            Let's illustrate that with a simple diagram with arrows.
+            <br />Let's suppose that each of those arrows corresponds to the response we get back from our back for
+            instance. <br />Here we have two answers. They arrive in-order - ie the result for the first query we
+            launched arrives before the one of the second query (which is hopefully most of the time the case).
+            <br />Let's relabel them - thanks to our example on Paris and London: Results for Paris, Results for London.
+          </aside>
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 926 520">
+            <g class="diag-white">
+              <g transform="translate(10 436) rotate(0 453 0)">
+                <path d="M1 -2 C152 -2, 754 -1, 905 -0 M1 2 C152 3, 752 1, 904 1" />
+                <path d="M872 9 C881 11, 895 1, 901 2 M876 12 C885 7, 894 5, 902 1" />
+                <path d="M872 -11 C880 -2, 895 -5, 901 2 M876 -7 C885 -5, 894 -0, 902 1" />
+              </g>
+            </g>
+            <g class="diag-white" transform="translate(844 466) rotate(0 34 22)">
+              <text x="0" y="32">Time</text>
+            </g>
+            <g class="diag-answer">
+              <g transform="translate(302 265) rotate(0 0 79)">
+                <path d="M-0 0 C-1 27, -2 136, -2 163 M3 -4 C3 22, 3 135, 3 162" />
+                <path d="M-6 131 C-4 146, -1 157, 5 165 M-6 133 C-3 141, -3 144, 1 160" />
+                <path d="M14 132 C8 146, 4 157, 5 165 M14 133 C13 141, 8 144, 1 160" />
+              </g>
+            </g>
+            <g
+              class="diag-answer fragment fade-out"
+              data-fragment-index="1"
+              transform="translate(78 179) rotate(270 191 22)"
+            >
+              <text x="0" y="32">Results for query #1</text>
+            </g>
+            <g class="diag-answer">
+              <g transform="translate(652 258) rotate(0 -1 83)">
+                <path d="M0 2 C-0 29, -1 138, -2 165 M1 0 C0 27, -4 140, -4 167" />
+                <path d="M-11 137 C-7 148, -7 162, -2 168 M-15 138 C-12 147, -10 154, -6 166" />
+                <path d="M9 138 C4 149, -2 162, -2 168 M5 139 C1 148, -2 155, -6 166" />
+              </g>
+            </g>
+            <g
+              class="diag-answer fragment fade-out"
+              data-fragment-index="1"
+              transform="translate(439 186) rotate(270 181 22)"
+            >
+              <text x="0" y="32">Results for query #2</text>
+            </g>
+            <g class="diag-answer fragment" data-fragment-index="1" transform="translate(78 179) rotate(270 191 22)">
+              <text x="0" y="32">Results for stays in Paris</text>
+            </g>
+            <g class="diag-answer fragment" data-fragment-index="1" transform="translate(439 186) rotate(270 181 22)">
+              <text x="0" y="32">Results for stays in London</text>
+            </g>
+            <g class="diag-user fragment" data-fragment-index="2">
+              <g transform="translate(60 265) rotate(0 0 80)">
+                <path d="M-1 -1 C-0 25, -0 134, -0 162 M0 -0 C-0 26, 2 133, 1 160" />
+                <path d="M-10 133 C-9 138, -1 147, -1 160 M-9 130 C-3 139, -1 147, -0 159" />
+                <path d="M10 133 C6 138, 10 147, -1 160 M11 130 C10 138, 6 146, -0 159" />
+              </g>
+            </g>
+            <g class="diag-user fragment" data-fragment-index="2" transform="translate(-118 217) rotate(270 150 22)">
+              <text x="0" y="32">User looks for stays in Paris</text>
+            </g>
+            <g class="diag-call fragment" data-fragment-index="2">
+              <g transform="translate(83 426.148936170213) rotate(0 -1 -39)">
+                <path d="M-1 -0 C-2 -13, -0 -62, -0 -74 M-2 -2 C-3 -15, 0 -64, 0 -77" />
+                <path d="M7 -50 C6 -60, 2 -70, 2 -80 M8 -50 C6 -56, 6 -60, 1 -76" />
+                <path d="M-12 -51 C-5 -61, -1 -70.551366474985, 2 -80 M-11 -51 C-8 -56, -3 -61, 1 -76" />
+              </g>
+            </g>
+            <g class="diag-call fragment" data-fragment-index="2" transform="translate(-28 261) rotate(270 136.5 22)">
+              <text x="0" y="32">API call for Paris</text>
+            </g>
+            <g class="diag-user fragment" data-fragment-index="2" transform="translate(261 232) rotate(270 140 22)">
+              <text x="0" y="32">User looks for stays in London</text>
+            </g>
+            <g class="diag-user fragment" data-fragment-index="2">
+              <g transform="translate(431 264) rotate(0 -0 80)">
+                <path d="M2 2 C2 30, -1 135, -1 162 M2 -2 C1 24, -2 135, -2 163" />
+                <path d="M-8 135 C-13 145, -8 151, -3 166 M-11 136 C-10 144, -8 151, -1 162" />
+                <path d="M11 135 C2 146, 2 152, -3 166 M9 136 C4 144, 2 151, -1 162" />
+              </g>
+            </g>
+            <g class="diag-call fragment" data-fragment-index="2">
+              <g transform="translate(451 425) rotate(0 -0 -36)">
+                <path d="M0 1 C0 -10, 0 -62, 0 -75 M1 -4 C0 -17, -3 -61, -3 -72" />
+                <path d="M10 -45 C5 -56, 3 -59, 0 -71 M9 -44 C5 -51, 3 -57, -4 -71" />
+                <path d="M-10 -45 C-8 -55, -3 -59, 0 -71 M-10 -43 C-11 -51, -8 -57, -4 -71" />
+              </g>
+            </g>
+            <g class="diag-call fragment" data-fragment-index="2" transform="translate(348 269) rotate(270 126 22)">
+              <text x="0" y="32">API call for London</text>
+            </g>
+            <g class="diag-answer fragment" data-fragment-index="3" transform="translate(78 179) rotate(270 191 22)">
+              <text x="0" y="32" style="text-decoration: line-through; fill: darkred;">
+                Results for stays in Paris
+              </text>
+            </g>
+            <g class="diag-answer fragment" data-fragment-index="3">
+              <g transform="translate(302 265) rotate(0 0 79)">
+                <path d="M-0 0 C-1 27, -2 136, -2 163 M3 -4 C3 22, 3 135, 3 162" style="stroke: darkred;" />
+                <path d="M-6 131 C-4 146, -1 157, 5 165 M-6 133 C-3 141, -3 144, 1 160" style="stroke: darkred;" />
+                <path d="M14 132 C8 146, 4 157, 5 165 M14 133 C13 141, 8 144, 1 160" style="stroke: darkred;" />
+              </g>
+            </g>
+            <g class="diag-answer fragment" data-fragment-index="3" transform="translate(578 179) rotate(270 191 22)">
+              <text x="0" y="32">
+                Results for stays in Paris
+              </text>
+            </g>
+            <g class="diag-answer fragment" data-fragment-index="3">
+              <g transform="translate(802 265) rotate(0 0 79)">
+                <path d="M-0 0 C-1 27, -2 136, -2 163 M3 -4 C3 22, 3 135, 3 162" />
+                <path d="M-6 131 C-4 146, -1 157, 5 165 M-6 133 C-3 141, -3 144, 1 160" />
+                <path d="M14 132 C8 146, 4 157, 5 165 M14 133 C13 141, 8 144, 1 160" />
+              </g>
+            </g>
+          </svg>
+        </section>
+        <section>
+          <aside class="notes">
+            But fed from an API - like searches and suggestions in your favorite search engine (eg.: Google)
+          </aside>
+          <h2>Let's consider a simple example</h2>
           <h3 class="fragment custom-collapse">
-            With a simple autocomplete field in React
+            An autocomplete field in React
           </h3>
         </section>
         <section>
-          <!--
-		  Here is a footage of an autocomplete field
-		-->
+          <aside class="notes">
+            Just to be aligned with all of you, here is what an autocomplete can look like
+          </aside>
           <img src="./images/autocomplete-ok.gif" style="border: none; background: none; margin: 0px;" />
         </section>
-        <section>
-          <!--
-		  What can go wrong with it?
-		  Hmmmm... Actually many things
-		  Do you remember what can cause a race condition according to the definition from Wikipedia?
-		-->
-          <h3>What can go wrong with it?</h3>
+        <section class="fullScreen">
+          <aside class="notes"></aside>
+          <pre><code class="hljs" data-trim data-line-numbers="1-28|5,21-24|8,16|9-12|2,13-15|6,10,14,25">
+			import React, { useEffect, useState } from 'react';
+			import { suggestionsFor } from './Api';
+			
+			export default function Autocomplete() {
+			  const [query, setQuery] = useState('');
+			  const [suggestions, setSuggestions] = useState([]);
+			
+			  useEffect(() =&gt; {
+			    if (query === '') {
+			      setSuggestions([]);
+			      return;
+			    }
+			    suggestionsFor(query).then((suggestions) =&gt; {
+			      setSuggestions(suggestions);
+			    });
+			  }, [query]);
+			
+			  return (
+			    &lt;div&gt;
+			      &lt;label htmlFor="autocomplete-field"&gt;Select a package: &lt;/label&gt;
+			      &lt;input
+			        id="autocomplete-field"
+			        value={query}
+			        onChange={(e) =&gt; setQuery(e.target.value)} /&gt;
+			      &lt;ul&gt;{suggestions.map((s) =&gt; &lt;li key={s}=&gt;{s}&lt;/li&gt;)}&lt;/ul&gt;
+			    &lt;/div&gt;
+			  );
+			}			
+		  </code></pre>
         </section>
         <section>
-          <!--
-		  Uncontrolled events!
-		  What can be the "uncontrolled events" in our case?
-		-->
-          <p class="quote">
-            <span class="fragment highlight-transparent visible" data-fragment-index="1"
-              >A race condition […] is the condition […] where the system's substantive behavior is dependent on the </span
-            ><span class="fragment highlight-green visible" data-fragment-index="1">sequence</span
-            ><span class="fragment highlight-transparent visible" data-fragment-index="1"> or timing </span
-            ><span class="fragment highlight-green visible" data-fragment-index="1">of</span
-            ><span class="fragment highlight-transparent visible" data-fragment-index="1"> other </span
-            ><span class="fragment highlight-green visible" data-fragment-index="1">uncontrollable events</span
-            ><span class="fragment highlight-transparent visible" data-fragment-index="1">.</span>
-          </p>
-          <p class="vsmallnote">
-            Source:
-            <a href="https://en.wikipedia.org/wiki/Race_condition" target="_blank"
-              >https://en.wikipedia.org/wiki/Race_condition</a
-            >
-          </p>
+		  <aside class="notes"></aside>
+		  <h3>How to test it?</h3>
+		  <ul>
+			<li class="fragment">Mock the api - using <code>jest.mock</code></li>
+			<li class="fragment">Simulate an user typing a search query - using <code>@testing-library/user-event</code></li>
+			<li class="fragment">Check that the suggestions are correct</li>
+		  </ul>
+        </section>
+        <section class="fullScreen">
+          <aside class="notes"></aside>
+          <pre><code class="hljs javascript" data-trim data-line-numbers="1-24|2-8|10-17|19-23">
+test('should autocomplete queries', async () =&gt; {
+  // Arrange
+  const allResults = ['apple', 'banana', 'orange', 'pineapple'];
+  suggestionsFor.mockImplementation(async (query) =&gt; {
+    return allResults.filter((r) =&gt; r.includes(query));
+  });
+  const userQuery = 'nan';
+  const expectedResults = ['banana'];
+  
+  // Act
+  const { getByRole, getAllByRole } = render(&lt;Autocomplete /&gt;);
+  await act(async () =&gt; {
+    await userEvent.type(
+	  getByRole('textbox'),
+	  userQuery,
+	  { allAtOnce: false, delay: 1 });
+  });
+  
+  // Assert
+  const displayedSuggestions = getAllByRole('listitem')
+      .map((el) =&gt; el.textContent);
+  expect(displayedSuggestions).toEqual(expectedResults);
+  expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
+});
+		  </code></pre>
         </section>
         <section>
-          <!--
-		  - Interactions with the user:
-			- More precisely for this case: user typings stuff in the field
-		  - Network delays:
-			- Slow network
-			- BUT also: some servers or requests might be slower than others
-		-->
-          <h3>
-            Our
-            <span style="color: rgb(17, 183, 33);">uncontrolled events</span>:
-          </h3>
-          <ul>
-            <li class="fragment">Interactions with the user</li>
-            <li class="fragment">Network delays</li>
-          </ul>
+		  <aside class="notes"></aside>
+		  <h3>Test status: <b><span class="fragment" style="color:green">√</span></h3></b>
+		  <p class="fragment">🤔 What?</p>
         </section>
         <section>
           <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 926 520">
@@ -650,7 +659,7 @@ expect(isSubstring(a + b + c, b)).toBe(true);
               </g>
             </g>
             <g class="diag-user fragment" data-fragment-index="1" transform="translate(-118 217) rotate(270 150 22)">
-              <text x="0" y="32">User looks for React</text>
+              <text x="0" y="32">Updating query to "n"</text>
             </g>
             <g class="diag-call fragment" data-fragment-index="2">
               <g transform="translate(83 426.148936170213) rotate(0 -1 -39)">
@@ -660,10 +669,20 @@ expect(isSubstring(a + b + c, b)).toBe(true);
               </g>
             </g>
             <g class="diag-call fragment" data-fragment-index="2" transform="translate(-28 261) rotate(270 136.5 22)">
-              <text x="0" y="32">API call for React</text>
+              <text x="0" y="32">API call for "n"</text>
+            </g>
+            <g class="diag-user fragment" data-fragment-index="3" transform="translate(81 232) rotate(270 140 22)" style="opacity: 0.5;">
+              <text x="0" y="32">Updating query to "na"</text>
+            </g>
+            <g class="diag-user fragment" data-fragment-index="3" style="opacity: 0.5;">
+              <g transform="translate(251 264) rotate(0 -0 80)">
+                <path d="M2 2 C2 30, -1 135, -1 162 M2 -2 C1 24, -2 135, -2 163" />
+                <path d="M-8 135 C-13 145, -8 151, -3 166 M-11 136 C-10 144, -8 151, -1 162" />
+                <path d="M11 135 C2 146, 2 152, -3 166 M9 136 C4 144, 2 151, -1 162" />
+              </g>
             </g>
             <g class="diag-user fragment" data-fragment-index="3" transform="translate(141 232) rotate(270 140 22)">
-              <text x="0" y="32">User looks for React-Europe</text>
+              <text x="0" y="32">Updating query to "nan"</text>
             </g>
             <g class="diag-user fragment" data-fragment-index="3">
               <g transform="translate(311 264) rotate(0 -0 80)">
@@ -680,35 +699,7 @@ expect(isSubstring(a + b + c, b)).toBe(true);
               </g>
             </g>
             <g class="diag-call fragment" data-fragment-index="4" transform="translate(228 269) rotate(270 126 22)">
-              <text x="0" y="32">API call for React-Europe</text>
-            </g>
-            <g class="diag-user fragment" data-fragment-index="5" style="opacity: 0.5;">
-              <g transform="translate(250 264) rotate(0 -0 80)">
-                <path d="M2 2 C2 30, -1 135, -1 162 M2 -2 C1 24, -2 135, -2 163" />
-                <path d="M-8 135 C-13 145, -8 151, -3 166 M-11 136 C-10 144, -8 151, -1 162" />
-                <path d="M11 135 C2 146, 2 152, -3 166 M9 136 C4 144, 2 151, -1 162" />
-              </g>
-            </g>
-            <g class="diag-user fragment" data-fragment-index="5" style="opacity: 0.3;">
-              <g transform="translate(230 264) rotate(0 -0 80)">
-                <path d="M2 2 C2 30, -1 135, -1 162 M2 -2 C1 24, -2 135, -2 163" />
-                <path d="M-8 135 C-13 145, -8 151, -3 166 M-11 136 C-10 144, -8 151, -1 162" />
-                <path d="M11 135 C2 146, 2 152, -3 166 M9 136 C4 144, 2 151, -1 162" />
-              </g>
-            </g>
-            <g class="diag-user fragment" data-fragment-index="5" style="opacity: 0.2;">
-              <g transform="translate(210 264) rotate(0 -0 80)">
-                <path d="M2 2 C2 30, -1 135, -1 162 M2 -2 C1 24, -2 135, -2 163" />
-                <path d="M-8 135 C-13 145, -8 151, -3 166 M-11 136 C-10 144, -8 151, -1 162" />
-                <path d="M11 135 C2 146, 2 152, -3 166 M9 136 C4 144, 2 151, -1 162" />
-              </g>
-            </g>
-            <g class="diag-user fragment" data-fragment-index="5" style="opacity: 0.1;">
-              <g transform="translate(190 264) rotate(0 -0 80)">
-                <path d="M2 2 C2 30, -1 135, -1 162 M2 -2 C1 24, -2 135, -2 163" />
-                <path d="M-8 135 C-13 145, -8 151, -3 166 M-11 136 C-10 144, -8 151, -1 162" />
-                <path d="M11 135 C2 146, 2 152, -3 166 M9 136 C4 144, 2 151, -1 162" />
-              </g>
+              <text x="0" y="32">API call for "nan"</text>
             </g>
             <g class="diag-answer fragment" data-fragment-index="6">
               <g transform="translate(502 265) rotate(0 0 79)">
@@ -718,7 +709,7 @@ expect(isSubstring(a + b + c, b)).toBe(true);
               </g>
             </g>
             <g class="diag-answer fragment" data-fragment-index="6" transform="translate(278 179) rotate(270 191 22)">
-              <text x="0" y="32">Results for React-Europe</text>
+              <text x="0" y="32">Results for "nan" [🍌]</text>
             </g>
             <g class="diag-answer fragment" data-fragment-index="7">
               <g transform="translate(652 258) rotate(0 -1 83)">
@@ -728,32 +719,96 @@ expect(isSubstring(a + b + c, b)).toBe(true);
               </g>
             </g>
             <g class="diag-answer fragment" data-fragment-index="7" transform="translate(439 186) rotate(270 181 22)">
-              <text x="0" y="32">Results for React</text>
+              <text x="0" y="32">Results for "n" [🍌/🍊/🍍]</text>
             </g>
           </svg>
         </section>
         <section>
-          <!--
-		  I don't know how you feel when the autocompletes behave that way.
-		  But on my side, I find it a bit unusable sometimes.
-
-		  Hopefully most of the time, it's pretty invisible for the end-users as the are using our website with a correct connection
-		  and our servers are giving back answers in a pretty stable amount of time.
-		-->
+		  <aside class="notes"></aside>
           <img src="./images/autocomplete-bug-screenshot.png" style="border: none; background: none; margin: 0px;" />
         </section>
         <section>
-          <!--
-		  By the way, the screenshot is real!
-
-		  It is what you can get if you just delay a bit
-		  when queries resolve in the autocomplete above
-
-		  But how can we prevent from such issue?
-		  Let's build our own autocomplete and see we would usually test it
-		-->
+		  <aside class="notes"></aside>
           <img src="./images/autocomplete-bug.gif" style="border: none; background: none; margin: 0px;" />
+		</section>
+		<section>
+			<aside class="notes"></aside>
+			<h3>What is missing in our test?</h3>
+			<p class="fragment">Async mocks are always resolved in order</p>
+		</section>
+		<section>
+			<aside class="notes"></aside>
+			<h3>Let's test it using <code>fast-check</code></h3>
+			<img class="fragment" src="./images/logo.png" style="border: none; background: none; margin: 0px;" />
+		</section>
+		<section class="fullScreen">
+			<aside class="notes"></aside>
+			<pre><code class="hljs javascript" data-trim data-line-numbers="1-29|4-6,8,10-19,21-26|2,3,27,28|7-9|20|2,3,27,28,7-9,20">
+test('should autocomplete queries', async () =&gt; {
+  await fc.assert(
+    fc.asyncProperty(fc.scheduler({ act }), async (s) =&gt; {
+      // Arrange
+      const allResults = ['apple', 'banana', 'orange', 'pineapple'];
+      suggestionsFor.mockImplementation(
+        s.scheduleFunction(async (query) =&gt; {
+          return allResults.filter((r) =&gt; r.includes(query));
+        })
+      );
+      const userQuery = 'nan';
+      const expectedResults = ['banana'];
+      
+      // Act
+      const { getByRole, getAllByRole } = render(&lt;Autocomplete /&gt;);
+      await act(async () =&gt; {
+        await userEvent.type(getByRole('textbox'),
+          userQuery, { allAtOnce: false, delay: 1 });
+      });
+      await s.waitAll();
+      
+      // Assert
+      const displayedSuggestions = getAllByRole('listitem')
+          .map((el) =&gt; el.textContent);
+      expect(displayedSuggestions).toEqual(expectedResults);
+      expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
+    }).beforeEach(() =&gt; {/* same as beforeEach */})
+  );
+});
+			</code></pre>
+		</section>
+        <section>
+		  <aside class="notes"></aside>
+		  <h3>Test status: <b><span class="fragment" style="color:red">×</span></h3></b>
         </section>
+		<section class="fullScreen">
+			<aside class="notes"></aside>
+			<pre><code class="hljs text" data-trim data-line-numbers="1-25|3-14|11,12|8,9|5,6|5-12,18-25">
+Property failed after 3 tests
+{ seed: 1134225087, path: "2", endOnFailure: true }
+Counterexample: [Scheduler`
+
+-> [task#3] function::("nan")
+	resolved with value ["banana"]
+
+-> [task#2] function::("na")
+	resolved with value ["banana"]
+
+-> [task#1] function::("n")
+	resolved with value ["banana","orange","pineapple"]
+
+`]
+Shrunk 0 time(s)
+Got error: Error: expect(received).toEqual(expected) // deep equality
+
+- Expected
++ Received
+
+  Array [
+      "banana",
++     "orange",
++     "pineapple",
+  ]
+			</code></pre>
+		</section>
         <section>
           <h2>Questions?</h2>
           <div style="margin-top: 48px;"></div>

@@ -15,12 +15,12 @@ beforeEach(() => {
 
 test('should autocomplete queries', async () => {
   // Arrange
-  const userQuery = 'ananas';
-  const allResults = ['ananas', 'apple', 'banana', 'grape', 'orange', 'peach', 'strawberry'];
+  const userQuery = 'pineapple';
+  const allResults = ['apple', 'banana', 'grape', 'orange', 'peach', 'pineapple', 'strawberry'];
   suggestionsFor.mockImplementation(async (query) => {
     return allResults.filter((r) => r.includes(query)).slice(0, 10);
   });
-  const expectedResults = ['ananas'];
+  const expectedResults = ['pineapple'];
 
   // Act
   const { getByRole, getAllByRole } = render(<Autocomplete />);
@@ -34,19 +34,40 @@ test('should autocomplete queries', async () => {
   expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
 });
 
-test('should autocomplete queries', async () => {
+test('should autocomplete queries (slides)', async () => {
+  // Arrange
+  const allResults = ['apple', 'banana', 'orange', 'pineapple'];
+  suggestionsFor.mockImplementation(async (query) => {
+    return allResults.filter((r) => r.includes(query));
+  });
+  const userQuery = 'nan';
+  const expectedResults = ['banana'];
+
+  // Act
+  const { getByRole, getAllByRole } = render(<Autocomplete />);
+  await act(async () => {
+    await userEvent.type(getByRole('textbox'), userQuery, { allAtOnce: false, delay: 1 });
+  });
+
+  // Assert
+  const displayedSuggestions = getAllByRole('listitem').map((el) => el.textContent);
+  expect(displayedSuggestions).toEqual(expectedResults);
+  expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
+});
+
+test('should autocomplete queries (slides)', async () => {
   await fc.assert(
     fc
       .asyncProperty(fc.scheduler({ act }), async (s) => {
         // Arrange
-        const userQuery = 'ananas';
-        const allResults = ['ananas', 'apple', 'banana', 'grape', 'orange', 'peach', 'strawberry'];
+        const allResults = ['apple', 'banana', 'orange', 'pineapple'];
         suggestionsFor.mockImplementation(
           s.scheduleFunction(async (query) => {
             return allResults.filter((r) => r.includes(query)).slice(0, 10);
           })
         );
-        const expectedResults = ['ananas'];
+        const userQuery = 'nan';
+        const expectedResults = ['banana'];
 
         // Act
         const { getByRole, getAllByRole } = render(<Autocomplete />);
@@ -72,7 +93,7 @@ test('should autocomplete queries', async () => {
     fc
       .asyncProperty(fc.scheduler({ act }), fc.string(1, 10), async (s, userQuery) => {
         // Arrange
-        const allResults = ['ananas', 'apple', 'banana', 'grape', 'orange', 'peach', 'strawberry'];
+        const allResults = ['apple', 'banana', 'grape', 'orange', 'peach', 'pineapple', 'strawberry'];
         suggestionsFor.mockImplementation(
           s.scheduleFunction(async (query) => {
             return allResults.filter((r) => r.includes(query)).slice(0, 10);
