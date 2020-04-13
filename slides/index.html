@@ -981,9 +981,9 @@ test('should autocomplete queries', async () =&gt; {
       // Act
       const { getByRole, queryAllByRole } = render(&lt;Autocomplete /&gt;);
       s.scheduleSequence(
-        [...userQuery].map((c, i) => ({
+        [...userQuery].map((c, i) =&gt; ({
           label: `Typing "${c}"`,
-          builder: () => userEvent.type(getByRole('textbox'),
+          builder: () =&gt; userEvent.type(getByRole('textbox'),
                                         userQuery.substr(0, i+1),
                                         { allAtOnce: true }),
         }))
