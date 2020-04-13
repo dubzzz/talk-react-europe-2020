@@ -136,7 +136,7 @@ test('should autocomplete queries (slides latest)', async () => {
         s.scheduleSequence(
           [...userQuery].map((c, idx) => ({
             label: `Typing "${c}"`,
-            builder: () => userEvent.type(getByRole('textbox'), userQuery.substr(0, idx + 1)),
+            builder: () => userEvent.type(getByRole('textbox'), userQuery.substr(0, idx + 1), { allAtOnce: true }),
           }))
         );
         await s.waitAll();
