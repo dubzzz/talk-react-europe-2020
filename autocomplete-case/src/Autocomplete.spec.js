@@ -119,6 +119,40 @@ test('should autocomplete queries (slides)', async () => {
   );
 });
 
+test('should autocomplete queries (slides latest)', async () => {
+  await fc.assert(
+    fc
+      .asyncProperty(fc.scheduler({ act }), fc.set(fc.string()), fc.string(1, 10), async (s, allResults, userQuery) => {
+        // Arrange
+        suggestionsFor.mockImplementation(
+          s.scheduleFunction(async (query) => {
+            return allResults.filter((r) => r.includes(query)).slice(0, 10);
+          })
+        );
+        const expectedResults = allResults.filter((r) => r.includes(userQuery));
+
+        // Act
+        const { getByRole, queryAllByRole } = render(<Autocomplete />);
+        s.scheduleSequence(
+          [...userQuery].map((c, idx) => ({
+            label: `Typing "${c}"`,
+            builder: () => userEvent.type(getByRole('textbox'), userQuery.substr(0, idx + 1)),
+          }))
+        );
+        await s.waitAll();
+
+        // Assert
+        const displayedSuggestions = queryAllByRole('listitem');
+        expect(displayedSuggestions.map((el) => el.textContent)).toEqual(expectedResults);
+        expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
+      })
+      .beforeEach(() => {
+        jest.resetAllMocks();
+        cleanup();
+      })
+  );
+});
+
 test('should autocomplete queries', async () => {
   await fc.assert(
     fc

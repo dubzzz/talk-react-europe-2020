@@ -924,9 +924,9 @@ test('should autocomplete queries', async () =&gt; {
 });
 			</code></pre>
 		</section>
-		<section class="fullScreen" data-transition="fade-in slide-out">
+		<section class="fullScreen" data-transition="fade-in fade-out">
 			<aside class="notes"></aside>
-			<pre><code class="hljs javascript" data-trim data-line-numbers="4,6|1-200">
+			<pre><code class="hljs javascript" data-trim data-line-numbers="4,6|18-21">
 test('should autocomplete queries', async () =&gt; {
   await fc.assert(
 	fc.asyncProperty(fc.scheduler({ act })
@@ -960,7 +960,45 @@ test('should autocomplete queries', async () =&gt; {
 });
 			</code></pre>
 		</section>
-		
+		<section class="fullScreen" data-transition="fade-in slide-out">
+			<aside class="notes"></aside>
+			<pre><code class="hljs javascript" data-trim data-line-numbers="18-24|1-200">
+test('should autocomplete queries', async () =&gt; {
+  await fc.assert(
+	fc.asyncProperty(fc.scheduler({ act })
+                   , fc.set(fc.string())
+                   , fc.string(1, 10)
+                   , async (s, allResults, userQuery) =&gt; {
+      // Arrange
+      suggestionsFor.mockImplementation(
+        s.scheduleFunction(async (query) =&gt; {
+          return allResults.filter((r) =&gt; r.includes(query));
+        })
+      );
+      const expectedResults = allResults
+          .filter((r) =&gt; r.includes(userQuery));
+      
+      // Act
+      const { getByRole, queryAllByRole } = render(&lt;Autocomplete /&gt;);
+      s.scheduleSequence(
+        [...userQuery].map((c, i) => ({
+          label: `Typing "${c}"`,
+          builder: () => userEvent.type(getByRole('textbox'),
+                                        userQuery.substr(0, i+1)),
+        }))
+      );
+      await s.waitAll();
+      
+      // Assert
+      const displayedSuggestions = queryAllByRole('listitem')
+          .map((el) =&gt; el.textContent);
+      expect(displayedSuggestions).toEqual(expectedResults);
+      expect(suggestionsFor).toHaveBeenCalledTimes(userQuery.length);
+    }).beforeEach(() =&gt; {/* same as beforeEach */})
+  );
+});
+			</code></pre>
+		</section>
 		<section class="fullScreen">
 			<aside class="notes"></aside>
 			<pre><code class="hljs text" data-trim>
@@ -969,11 +1007,13 @@ Property failed after 2 tests
 
 Counterexample: [
   Scheduler`
-    -> [task#2] function::("aa") resolved with value []
-    -> [task#1] function::("a") resolved with value ["a"]
-  `,["a"],"aa"]
+    -> [task#1] sequence::Typing "A" resolved
+    -> [task#2] sequence::Typing "B" resolved
+    -> [task#4] function::("AB") resolved with value []
+    -> [task#3] function::("A") resolved with value ["A"]
+  `,["A"],"AB"]
 
-Shrunk 33 time(s)
+Shrunk 15 time(s)
 Got error: Error: expect(received).toEqual(expected) // deep equality
 
 - Expected
@@ -981,7 +1021,7 @@ Got error: Error: expect(received).toEqual(expected) // deep equality
 
 - Array []
 + Array [
-+   "a",
++   "A",
 + ]
 			</code></pre>
 		</section>
