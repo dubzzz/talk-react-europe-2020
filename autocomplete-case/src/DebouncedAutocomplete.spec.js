@@ -35,31 +35,11 @@ test('should autocomplete queries (full)', async () => {
             builder: () => userEvent.type(getByRole('textbox'), userQuery.substr(0, idx + 1), { allAtOnce: true }),
           }))
         );
-
-        let alreadyScheduledTaskToUnqueueTimers = false;
-        const countAndAppendTimerIfNeeded = () => {
-          if (!alreadyScheduledTaskToUnqueueTimers && jest.getTimerCount() !== 0) {
-            // We do not have any scheduled task suitable to enqueue timers
-            // But we have pending timers
-            // So we need to queue such task
-            alreadyScheduledTaskToUnqueueTimers = true;
-            s.schedule(Promise.resolve('advance timers if any')).then(() => {
-              alreadyScheduledTaskToUnqueueTimers = false;
-              if (jest.getTimerCount() > 0) {
-                jest.advanceTimersToNextTimer();
-              }
-            });
-          }
-          return s.count();
-        };
-        while (countAndAppendTimerIfNeeded() !== 0) {
-          await s.waitOne();
-        }
+        await waitAllWithTimers(s);
 
         // Assert
         const displayedSuggestions = queryAllByRole('listitem');
         expect(displayedSuggestions.map((el) => el.textContent)).toEqual(expectedResults);
-        //throw 'debug';
       })
       .beforeEach(() => {
         jest.clearAllTimers();
@@ -68,3 +48,23 @@ test('should autocomplete queries (full)', async () => {
       })
   );
 });
+
+// Helpers
+
+const waitAllWithTimers = async (s) => {
+  let alreadyScheduledTaskToUnqueueTimers = false;
+  const countWithTimers = () => {
+    // Append a scheduled task to unqueue pending timers (if task missing and pending timers)
+    if (!alreadyScheduledTaskToUnqueueTimers && jest.getTimerCount() !== 0) {
+      alreadyScheduledTaskToUnqueueTimers = true;
+      s.schedule(Promise.resolve('advance timers if any')).then(() => {
+        alreadyScheduledTaskToUnqueueTimers = false;
+        jest.advanceTimersToNextTimer();
+      });
+    }
+    return s.count();
+  };
+  while (countWithTimers() !== 0) {
+    await s.waitOne();
+  }
+};
