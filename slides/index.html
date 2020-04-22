@@ -247,8 +247,15 @@
         fill: rgb(17, 183, 33);
       }
 
-      .has-light-background .slide-number {
-        background-color: white;
+      .slide-number {
+        background-color: inherit !important;
+      }
+      .footer-github {
+        filter: invert(0);
+        transition: all 0.2s ease;
+      }
+      .has-light-background + div .footer-github {
+        filter: invert(0.70);
       }
     </style>
 
@@ -1067,6 +1074,12 @@ Got error: Error: expect(received).toEqual(expected) // deep equality
               src="./images/logo.png"
               style="border: none; background: none; margin: 0px; box-shadow: none;"
             />
+            <p class="fragment custom-collapse" style="display: flex; justify-content: center; align-items: center; font-size: 0.8em; opacity: 0.9; margin-top: 0;">
+              <span style="margin-right: 8px;">Used by </span>
+              <img src="./images/jest.svg" style="height: 20px; border: none; background: none; margin: 0px;" />
+              <span style="margin: 0 8px;"> and </span>
+              <img src="./images/jasmine.svg" style="height: 20px; border: none; background: none; margin: 0px;" />
+            </p>
           </div>
           <div style="margin-top: 48px;"></div>
           <div style="color: #ffffff; vertical-align: middle;">
@@ -1092,7 +1105,7 @@ Got error: Error: expect(received).toEqual(expected) // deep equality
       "
     >
       <div style="color: #ffffff; vertical-align: middle; text-shadow: #0007 1px 1px 1px;">
-        <img src="./images/github-white.png" style="height: 16px; border: none; background: none; margin: 0px; text-shadow: #0007 1px 1px 1px;" />
+        <img src="./images/github-white.png" class="footer-github" style="height: 16px; border: none; background: none; margin: 0px; text-shadow: #0007 1px 1px 1px;" />
         dubzzz
       </div>
       <div style="color: #1da1f2; vertical-align: middle;">
