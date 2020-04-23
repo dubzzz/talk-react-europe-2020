@@ -273,10 +273,10 @@
       <div class="slides">
         <section>
           <aside class="notes">
-            Hey, hello everyone I'm Nicolas
-            <br />Before introducing myself more precisely. <br />Let's first see what we are gonna discuss in this
-            talk. <br />Today we will talk about "Detecting the unexpecting" and we will mostly focus on 'unexpected'
-            behaviour that can happen in the front.
+            <p>Nicolas</p>
+            <p>Subject: Unexpected behaviour</p>
+            <p>Where? In front</p>
+            <p>What? Next slide</p>
           </aside>
           <div>
             <img
@@ -293,18 +293,16 @@
         </section>
         <section>
           <aside class="notes">
-            But first, let's define what we can be 'unexpected'.
-            <br />It happened to all of us (or at least it will): we've worked hard for days, months or maybe years.
-            <br />We have highly covered the scenarii with tests (or maybe not). <br />But we are pretty confident that
-            the project will be good enough and bulletproof. <br />But even with all those guards, one day it happened,
-            a bug is reported...
+            <p>Everyone knows it</p>
+            <p>Hard work with tests, QA, users...</p>
+            <p>But uncovered bug in production</p>
           </aside>
           <h1>One day, it happened…</h1>
         </section>
         <section>
           <aside class="notes">
-            And you feel a bit like this little dog. All your efforts ruined in a few seconds as you were just reaching
-            the graal.
+            <p>Feeling: Like this little dog</p>
+            <p>Barely done BUT boom</p>
           </aside>
           <video controls width="100%" style="cursor: default;">
             <source src="./images/boom.webm" type="video/webm" />
@@ -312,9 +310,9 @@
         </section>
         <section>
           <aside class="notes">
-            There are many kind of 'unexpected' we can think about... They goes from security issues like this bug in
-            Android In a nutshell with the scenario on the right side you were able to by-pass the lockscreen and open
-            any Android device without knowing the password.
+            <p>Google Android example</p>
+            <p>Hard to detect</p>
+            <p>But critical</p>
           </aside>
           <div style="display: grid; grid-template-columns: 30% auto; column-gap: 50px;">
             <div>
@@ -337,8 +335,8 @@
         </section>
         <section>
           <aside class="notes">
-            Or more recently this one in facetime that allowed you to start the call before the person on the other side
-            even accepted it
+            <p>Critical too</p>
+            <p>Spy on others</p>
           </aside>
           <div style="display: grid; grid-template-columns: auto 30%; column-gap: 50px;">
             <div>
@@ -359,20 +357,20 @@
         </section>
         <section>
           <aside class="notes">
-            This one is a bit different and need some more context.
-            <br />I initially looked for an stay in Paris on a famous travel website. <br />Then I suddenly changed my
-            mind. I live in Paris. So I moved for a stay in London. <br />And here were the suggestions. <br />BUT as I
-            was browsing the suggestions, suddenly my first query went back.
-            <br />
-            <br />You might say: 'Ok, but this kind of bug is not really harmful...' <br />
-            But let's imagine the same thing happens on the front of your bank or on the plaform you use to schedule
-            your sprints, prepare your expenses... Just imagine, a UI glich telling you the operation was succesful
-            while it tells you about another operation, a add to cart that adds another product, or a remove from cart
-            that only removes visually from the cart...
-            <br /><br />The common thing between all those bugs is that they are pretty difficult to detect And
-            sometimes even impossible to reproduce or debug Either because the scenario is not well defined or
-            understood Or because the bug is caused by bad network conditions, slow computers or random ordering of
-            events...
+            <p>Story:
+              <br/>Look at Paris, But leave there,
+              <br/>Looked for stays in London, Pretty good ones, see!,
+              <br/>Arf..
+            </p>
+            <p>
+              UI Bug not critical?
+              <br/>Imagine Favorite Shopping website (when you pay, you have another price)
+              <br/>Imagine Bank Account
+              <br/>Imagine Issue Tracking solution
+            </p>
+            <p>
+              What could go wrong in the front?
+            </p>
           </aside>
           <img id="navigation-hell" alt="Navigation hell" src="./images/navigation-hell.gif" onclick="resetGif()" />
           <script>
@@ -384,7 +382,9 @@
         </section>
         <section>
           <aside class="notes">
-            Today we will speak of a really rare subject in the front: Race Conditions
+            <p>Rare subject</p>
+            <p>Race conditions in the front</p>
+            <p>Not restricted to back at all</p>
           </aside>
           <h2>Let's talk about race conditions</h2>
         </section>
@@ -1095,25 +1095,29 @@ Got error: Error: expect(received).toEqual(expected) // deep equality
     </div>
     <div
       style="
+        display: grid;
+        align-items: center;
+        column-gap: 0.5rem;
+        row-gap: 0.2rem;
         position: fixed;
         z-index: 9999;
         left: 1em;
         bottom: 1em;
         color: #ffffff;
-        font-size: 1.5em;
+        font-size: 2rem;
         font-family: 'Source Sans Pro', Helvetica, sans-serif;
       "
     >
-      <div style="color: #ffffff; vertical-align: middle; text-shadow: #0007 1px 1px 1px;">
-        <img src="./images/github-white.png" class="footer-github" style="height: 16px; border: none; background: none; margin: 0px; text-shadow: #0007 1px 1px 1px;" />
+      <img src="./images/github-white.png" class="footer-github" style="justify-self: center; grid-row: 1; grid-column: 1; height: 2rem; border: none; background: none; margin: 0px; text-shadow: #0007 1px 1px 1px" />
+      <div style="grid-row: 1; grid-column: 2; color: #ffffff; vertical-align: middle; text-shadow: #0007 1px 1px 1px">
         dubzzz
       </div>
-      <div style="color: #1da1f2; vertical-align: middle;">
-        <img src="./images/twitter.png" style="height: 16px; border: none; background: none; margin: 0px;" />
+      <img src="./images/twitter.png" style="justify-self: center; grid-row: 2; grid-column: 1; height: 2rem; border: none; background: none; margin: 0px;" />
+      <div style="grid-row: 2; grid-column: 2; color: #1da1f2; vertical-align: middle;">
         ndubien
       </div>
-      <div style="color: #cb3837; vertical-align: middle;">
-        <img src="./images/npm.png" style="width: 16px; border: none; background: none; margin: 0px;" />
+      <img src="./images/npm.png" style="justify-self: center; grid-row: 3; grid-column: 1; width: 2rem; border: none; background: none; margin: 0px;" />
+      <div style="grid-row: 3; grid-column: 2; color: #cb3837; vertical-align: middle;">
         fast-check
       </div>
     </div>
