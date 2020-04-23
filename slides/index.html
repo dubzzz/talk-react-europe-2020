@@ -1010,11 +1010,11 @@ test('should autocomplete queries', async () =&gt; {
       // Act
       const { getByRole, queryAllByRole } = render(&lt;Autocomplete /&gt;);
       s.scheduleSequence(
-        [...userQuery].map((c, i) =&gt; ({
-          label: `Typing "${c}"`,
-          builder: () =&gt; userEvent.type(getByRole('textbox'),
-                                        userQuery.substr(0, i+1),
-                                        { allAtOnce: true }),
+        [...userQuery].map(character =&gt; ({
+          label: `Typing "${character}"`,
+          builder: () =&gt; appendCharacterToInput(
+                                getByRole('textbox'),
+                                character),
         }))
       );
       await s.waitAll();
