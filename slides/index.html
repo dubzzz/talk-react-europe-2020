@@ -609,15 +609,14 @@
         <section>
 		  <aside class="notes"></aside>
 		  <h3>How to test it?</h3>
-		  <ul>
-			<li class="fragment">Mock the api - using <code>jest.mock</code></li>
-			<li class="fragment">Simulate an user typing a search query - using <code>@testing-library/user-event</code></li>
-			<li class="fragment">Check that the suggestions are correct</li>
-		  </ul>
-        </section>
+		  </section>
         <section class="fullScreen">
-          <aside class="notes"></aside>
-          <pre><code class="hljs javascript" data-trim data-line-numbers="1-24|2-8|10-17|19-23">
+          <aside class="notes">
+            <p>Mock the api</p>
+            <p>Simulate user typing a search query</p>
+            <p>Check suggestions</p>
+          </aside>
+          <pre><code class="hljs javascript" data-trim data-line-numbers="1,24|2-8|10-17|19-23">
 test('should autocomplete queries', async () =&gt; {
   // Arrange
   const allResults = ['apple', 'banana', 'orange', 'pineapple'];
