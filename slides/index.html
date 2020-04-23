@@ -810,7 +810,16 @@ test('should autocomplete queries', async () =&gt; {
 		  <h3>Test status: <b><span class="fragment" style="color:red">×</span></h3></b>
         </section>
 		<section class="fullScreen">
-			<aside class="notes"></aside>
+			<aside class="notes">
+        <p>
+          Tasks received in order 1, 2, 3
+          <br/>Executed in another order
+        </p>
+        <p>
+          33 % bug detection
+          <br/>"n" must came at the end
+        </p>
+      </aside>
 			<pre><code class="hljs text" data-trim data-line-numbers="1-25|3-14|11,12|8,9|5,6|5-12,18-25">
 Property failed after 3 tests
 { seed: 1134225087, path: "2", endOnFailure: true }
