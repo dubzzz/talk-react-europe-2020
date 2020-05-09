@@ -766,7 +766,7 @@ test('should autocomplete queries', async () =&gt; {
 		</section>
     <section>
       <style>
-        .results-n {
+        section.present .results-n {
           stroke: red;
           fill: red;
           animation-delay: 5s;
@@ -774,22 +774,22 @@ test('should autocomplete queries', async () =&gt; {
           animation-iteration-count: infinite;
           animation-name: results-n-anim;
         }
-        .results-n path {
+        section.present .results-n path {
           stroke-width: 4px;
           fill: none;
         }
-        .results-n text {
+        section.present .results-n text {
           font-family: 'Virgil';
           font-size: 26px;
           stroke-width: 0px;
         }
-        .results-na {
+        section.present .results-na {
           animation-delay: 5s;
           animation-duration: 5s;
           animation-iteration-count: infinite;
           animation-name: results-na-anim;
         }
-        .results-nan {
+        section.present .results-nan {
           animation-delay: 5s;
           animation-duration: 5s;
           animation-iteration-count: infinite;
