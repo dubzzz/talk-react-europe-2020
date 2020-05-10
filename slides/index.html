@@ -333,12 +333,12 @@
           </aside>
           <h1>One day, it happened…</h1>
         </section>
-        <section>
+        <section data-state="dog-video-show">
           <aside class="notes">
             <p>Feeling: Like this little dog</p>
             <p>Barely done BUT boom</p>
           </aside>
-          <video controls width="100%" style="cursor: default;">
+          <video controls width="100%" style="cursor: default;" id="dog-video" autoplay>
             <source src="./images/boom.webm" type="video/webm" />
           </video>
         </section>
@@ -1631,6 +1631,11 @@ Got error: Error: expect(received).toEqual(expected) // deep equality
           { src: 'plugin/notes/notes.js', async: true },
         ],
       });
+      Reveal.addEventListener('dog-video-show', () => {
+        const dogVideo = document.getElementById('dog-video');
+        dogVideo.currentTime = 0;
+        dogVideo.play();
+      })
     </script>
   </body>
 </html>
