@@ -357,7 +357,6 @@
               grid-template-columns: 30% auto;
               column-gap: 50px;
               justify-items: center;
-              align-items: flex-start;
             }
             section.present .animate-columns div:nth-child(2n+1), section.past .animate-columns div:nth-child(2n+1) {
               padding-top: 70px;
@@ -395,7 +394,7 @@
               <img
                 src="./images/lockscreen-guardian.png"
                 alt="Android issue with lockscreen"
-                style="background: none; border: none; box-shadow: none;"
+                style="background: none; border: none; box-shadow: none; width: 100%;"
               />
             </div>
             <div>
@@ -419,7 +418,7 @@
               <img
                 src="./images/facetime-nyt.png"
                 alt="FaceTime issue"
-                style="background: none; border: none; box-shadow: none;"
+                style="background: none; border: none; box-shadow: none; width: 100%;"
               />
             </div>
             <div>
@@ -1289,6 +1288,9 @@ test('should autocomplete queries', async () =&gt; {
 		<section class="fullScreen hidebefore">
       <aside class="notes"></aside>
       <style>
+        section.hidebefore code {
+          overflow-x: hidden;
+        }
         section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(2) td.hljs-ln-code,
         section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(3) td.hljs-ln-code,
         section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(7) td.hljs-ln-code,
