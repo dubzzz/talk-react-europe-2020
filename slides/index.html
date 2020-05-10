@@ -348,7 +348,49 @@
             <p>Hard to detect</p>
             <p>But critical</p>
           </aside>
-          <div style="display: grid; grid-template-columns: 30% auto; column-gap: 50px;">
+          <style>
+            section.present .animate-columns, section.past .animate-columns {
+              animation-duration: 4000ms;
+              animation-iteration-count: 1;
+              animation-name: animation-columns;
+              display: grid;
+              grid-template-columns: 30% auto;
+              column-gap: 50px;
+              justify-items: center;
+              align-items: flex-start;
+            }
+            section.present .animate-columns div:nth-child(2n+1), section.past .animate-columns div:nth-child(2n+1) {
+              padding-top: 70px;
+            }
+            section.present .animate-columns div:nth-child(2n+2), section.past .animate-columns div:nth-child(2n+2) {
+              animation-duration: 4000ms;
+              animation-iteration-count: 1;
+              animation-name: animation-columns-description;
+            }
+            @keyframes animation-columns {
+              0% {
+                grid-template-columns: 100% auto;
+              }
+              80% {
+                grid-template-columns: 100% auto;
+              }
+              100% {
+                grid-template-columns: 30% auto;
+              }
+            }
+            @keyframes animation-columns-description {
+              0% {
+                opacity: 0;
+              }
+              90% {
+                opacity: 0;
+              }
+              100% {
+                opacity: 1;
+              }
+            }
+          </style>
+          <div class="animate-columns" style="margin-top: 30px;">
             <div>
               <img
                 src="./images/lockscreen-guardian.png"
@@ -372,20 +414,20 @@
             <p>Critical too</p>
             <p>Spy on others</p>
           </aside>
-          <div style="display: grid; grid-template-columns: auto 30%; column-gap: 50px;">
-            <div>
-              <p class="quote-right">
-                0- Start a FaceTime video call
-                <br />1- Swipe up <br />2- Tap 'Add Person' before the call is answered <br />3- Add yourself - you'll
-                be able to listen to the person on the other end before they accept the call 💥
-              </p>
-            </div>
+          <div class="animate-columns" style="margin-top: 150px;">
             <div>
               <img
                 src="./images/facetime-nyt.png"
                 alt="FaceTime issue"
                 style="background: none; border: none; box-shadow: none;"
               />
+            </div>
+            <div>
+              <p class="quote">
+                0- Start a FaceTime video call
+                <br />1- Swipe up <br />2- Tap 'Add Person' before the call is answered <br />3- Add yourself - you'll
+                be able to listen to the person on the other end before they accept the call 💥
+              </p>
             </div>
           </div>
         </section>
