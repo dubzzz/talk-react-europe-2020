@@ -1289,17 +1289,17 @@ test('should autocomplete queries', async () =&gt; {
 		<section class="fullScreen hidebefore">
       <aside class="notes"></aside>
       <style>
-        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(2),
-        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(3),
-        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(7),
-        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(9),
-        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(20),
-        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(27),
-        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(28),
-        section.hidebefore code[data-line-numbers="2,3,27,28"] tr:nth-child(7),
-        section.hidebefore code[data-line-numbers="2,3,27,28"] tr:nth-child(9),
-        section.hidebefore code[data-line-numbers="2,3,27,28"] tr:nth-child(20),
-        section.hidebefore code[data-line-numbers="7-9"] tr:nth-child(20) {
+        section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(2) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(3) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(7) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(9) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(20) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(27) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="1-29"] tr:nth-child(28) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="2,3,27,28"] tr:nth-child(7) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="2,3,27,28"] tr:nth-child(9) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="2,3,27,28"] tr:nth-child(20) td.hljs-ln-code,
+        section.hidebefore code[data-line-numbers="7-9"] tr:nth-child(20) td.hljs-ln-code{
           opacity: 0 !important;
         }
         section.hidebefore code.visible[data-line-numbers="2,3,27,28"] tr:nth-child(2) td.hljs-ln-code,
@@ -1322,7 +1322,7 @@ test('should autocomplete queries', async () =&gt; {
           }
         }
       </style>
-			<pre><code class="hljs javascript" data-trim data-line-numbers="1,4-6,8,10-19,21-26,29|2,3,27,28|7-9|20|2,3,27,28,7-9,20">
+			<pre><code class="hljs javascript" data-trim data-line-numbers="1-29|2,3,27,28|7-9|20|2,3,27,28,7-9,20">
 test('should autocomplete queries', async () =&gt; {
   await fc.assert(
     fc.asyncProperty(fc.scheduler({ act }), async (s) =&gt; {
