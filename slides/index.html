@@ -350,7 +350,7 @@
           </aside>
           <style>
             section.present .animate-columns, section.past .animate-columns {
-              animation-duration: 4000ms;
+              animation-duration: 5000ms;
               animation-iteration-count: 1;
               animation-name: animation-columns;
               display: grid;
@@ -363,7 +363,7 @@
               padding-top: 70px;
             }
             section.present .animate-columns div:nth-child(2n+2), section.past .animate-columns div:nth-child(2n+2) {
-              animation-duration: 4000ms;
+              animation-duration: 5000ms;
               animation-iteration-count: 1;
               animation-name: animation-columns-description;
             }
@@ -1286,18 +1286,33 @@ test('should autocomplete queries', async () =&gt; {
 			<h3>Let's test it using <code>fast-check</code></h3>
 			<img src="./images/github-capture.png" style="border: none; background: none; margin: 0px;" />
 		</section>
-		<section class="fullScreen">
-			<aside class="notes"></aside>
-			<pre><code class="hljs javascript" data-trim data-line-numbers="1-29|1,4-6,8,10-19,21-26,29|2,3,27,28|7-9|20|2,3,27,28,7-9,20">
+		<section class="fullScreen hidebefore">
+      <aside class="notes"></aside>
+      <style>
+        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(2),
+        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(3),
+        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(7),
+        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(9),
+        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(20),
+        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(27),
+        section.hidebefore code[data-line-numbers="1,4-6,8,10-19,21-26,29"] tr:nth-child(28),
+        section.hidebefore code[data-line-numbers="2,3,27,28"] tr:nth-child(7),
+        section.hidebefore code[data-line-numbers="2,3,27,28"] tr:nth-child(9),
+        section.hidebefore code[data-line-numbers="2,3,27,28"] tr:nth-child(20),
+        section.hidebefore code[data-line-numbers="7-9"] tr:nth-child(20) {
+          opacity: 0 !important;
+        }
+      </style>
+			<pre><code class="hljs javascript" data-trim data-line-numbers="1,4-6,8,10-19,21-26,29|2,3,27,28|7-9|20|2,3,27,28,7-9,20">
 test('should autocomplete queries', async () =&gt; {
   await fc.assert(
     fc.asyncProperty(fc.scheduler({ act }), async (s) =&gt; {
       // Arrange
       const allResults = ['apple', 'banana', 'orange', 'pineapple'];
       suggestionsFor.mockImplementation(
-        s.scheduleFunction(async (query) =&gt; {
-          return allResults.filter((r) =&gt; r.includes(query));
-        })
+        s.scheduleFunction(
+          async query =&gt; allResults.filter((r) =&gt; r.includes(query))
+        )
       );
       const userQuery = 'nan';
       const expectedResults = ['banana'];
