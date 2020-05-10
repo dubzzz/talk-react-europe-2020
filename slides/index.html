@@ -1302,6 +1302,25 @@ test('should autocomplete queries', async () =&gt; {
         section.hidebefore code[data-line-numbers="7-9"] tr:nth-child(20) {
           opacity: 0 !important;
         }
+        section.hidebefore code.visible[data-line-numbers="2,3,27,28"] tr:nth-child(2) td.hljs-ln-code,
+        section.hidebefore code.visible[data-line-numbers="2,3,27,28"] tr:nth-child(3) td.hljs-ln-code,
+        section.hidebefore code.visible[data-line-numbers="2,3,27,28"] tr:nth-child(27) td.hljs-ln-code,
+        section.hidebefore code.visible[data-line-numbers="2,3,27,28"] tr:nth-child(28) td.hljs-ln-code,
+        section.hidebefore code.visible[data-line-numbers="7-9"] tr:nth-child(7) td.hljs-ln-code,
+        section.hidebefore code.visible[data-line-numbers="7-9"] tr:nth-child(9) td.hljs-ln-code,
+        section.hidebefore code.visible[data-line-numbers="20"] tr:nth-child(20) td.hljs-ln-code {
+          animation-duration: 500ms;
+          animation-name: show-code-line;
+          animation-timing-function: ease-in-out;
+        }
+        @keyframes show-code-line {
+          from {
+            transform: translateX(200%);
+          }
+          to {
+            transform: translateX(0%);
+          }
+        }
       </style>
 			<pre><code class="hljs javascript" data-trim data-line-numbers="1,4-6,8,10-19,21-26,29|2,3,27,28|7-9|20|2,3,27,28,7-9,20">
 test('should autocomplete queries', async () =&gt; {
