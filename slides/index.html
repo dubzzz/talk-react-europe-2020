@@ -342,96 +342,9 @@
             <source src="./images/boom.webm" type="video/webm" />
           </video>
         </section>
-        <section>
+        <section class="unexpected-examples">
           <aside class="notes">
-            <p>Google Android example</p>
-            <p>Hard to detect</p>
-            <p>But critical</p>
-          </aside>
-          <style>
-            section.present .animate-columns, section.past .animate-columns {
-              animation-duration: 5000ms;
-              animation-iteration-count: 1;
-              animation-name: animation-columns;
-              display: grid;
-              grid-template-columns: 30% auto;
-              column-gap: 50px;
-              justify-items: center;
-            }
-            section.present .animate-columns div:nth-child(2n+1), section.past .animate-columns div:nth-child(2n+1) {
-              padding-top: 70px;
-            }
-            section.present .animate-columns div:nth-child(2n+2), section.past .animate-columns div:nth-child(2n+2) {
-              animation-duration: 5000ms;
-              animation-iteration-count: 1;
-              animation-name: animation-columns-description;
-            }
-            @keyframes animation-columns {
-              0% {
-                grid-template-columns: 100% auto;
-              }
-              80% {
-                grid-template-columns: 100% auto;
-              }
-              100% {
-                grid-template-columns: 30% auto;
-              }
-            }
-            @keyframes animation-columns-description {
-              0% {
-                opacity: 0;
-              }
-              90% {
-                opacity: 0;
-              }
-              100% {
-                opacity: 1;
-              }
-            }
-          </style>
-          <div class="animate-columns" style="margin-top: 30px;">
-            <div>
-              <img
-                src="./images/lockscreen-guardian.png"
-                alt="Android issue with lockscreen"
-                style="background: none; border: none; box-shadow: none; width: 100%;"
-              />
-            </div>
-            <div>
-              <p class="quote">
-                0- Lock your screen
-                <br />1- Open the EMERGENCY CALL window <br />2- Type a few characters <br />3- Select them and
-                copy-paste until no longer highlights <br />4- Go back to the lockscreen <br />5- Open the camera
-                <br />6- Open the notification drawer <br />7- Tap the Settings (gear) icon <br />8- Long-tap in the
-                password field and paste the characters into it until it crashes 💥
-              </p>
-            </div>
-          </div>
-        </section>
-        <section>
-          <aside class="notes">
-            <p>Critical too</p>
-            <p>Spy on others</p>
-          </aside>
-          <div class="animate-columns" style="margin-top: 150px;">
-            <div>
-              <img
-                src="./images/facetime-nyt.png"
-                alt="FaceTime issue"
-                style="background: none; border: none; box-shadow: none; width: 100%;"
-              />
-            </div>
-            <div>
-              <p class="quote">
-                0- Start a FaceTime video call
-                <br />1- Swipe up <br />2- Tap 'Add Person' before the call is answered <br />3- Add yourself - you'll
-                be able to listen to the person on the other end before they accept the call 💥
-              </p>
-            </div>
-          </div>
-        </section>
-        <section>
-          <aside class="notes">
+            <p>Unexpected issues: You're not alone!</p>
             <p>Story:
               <br/>Look at Paris, But leave there,
               <br/>Looked for stays in London, Pretty good ones, see!,
@@ -447,7 +360,30 @@
               What could go wrong in the front?
             </p>
           </aside>
-          <img id="navigation-hell" alt="Navigation hell" src="./images/navigation-hell.gif" onclick="resetGif()" />
+          <style>
+            section.unexpected-examples:not([data-fragment="-1"]) img:not(.fragment),
+            section.unexpected-examples img.fragment:not(.current-fragment) {
+              display: none;
+            }
+          </style>
+          <img
+            src="./images/lockscreen-guardian.png"
+            alt="Android issue with lockscreen"
+            style="background: none; border: none; box-shadow: none;"
+          />
+          <img
+            class="fragment"
+            src="./images/facetime-nyt.png"
+            alt="FaceTime issue"
+            style="background: none; border: none; box-shadow: none;"
+          />
+          <img
+            class="fragment"
+            id="navigation-hell"
+            alt="Navigation hell"
+            src="./images/navigation-hell.gif"
+            onclick="resetGif()"
+          />
           <script>
             function resetGif() {
               document.getElementById('navigation-hell').setAttribute('src', '');
@@ -461,7 +397,7 @@
             <p>Race conditions in the front</p>
             <p>Not restricted to back at all</p>
           </aside>
-          <h2>Let's talk about race conditions</h2>
+          <h2 class="fragment">Let's talk about race conditions</h2>
         </section>
         <section>
           <aside class="notes"></aside>
