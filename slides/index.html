@@ -342,7 +342,7 @@
             <source src="./images/boom.webm" type="video/webm" />
           </video>
         </section>
-        <section class="unexpected-examples">
+        <section class="unexpected-examples" data-fragment="-1">
           <aside class="notes">
             <p>Unexpected issues: You're not alone!</p>
             <p>Story:
@@ -361,29 +361,31 @@
             </p>
           </aside>
           <style>
-            section.unexpected-examples:not([data-fragment="-1"]) img:not(.fragment),
-            section.unexpected-examples img.fragment:not(.current-fragment) {
+            section.present.unexpected-examples:not([data-fragment="-1"]) img:not(.fragment),
+            section.present.unexpected-examples img.fragment:not(.current-fragment) {
               display: none;
             }
           </style>
-          <img
-            src="./images/lockscreen-guardian.png"
-            alt="Android issue with lockscreen"
-            style="background: none; border: none; box-shadow: none;"
-          />
-          <img
-            class="fragment"
-            src="./images/facetime-nyt.png"
-            alt="FaceTime issue"
-            style="background: none; border: none; box-shadow: none;"
-          />
-          <img
-            class="fragment"
-            id="navigation-hell"
-            alt="Navigation hell"
-            src="./images/navigation-hell.gif"
-            onclick="resetGif()"
-          />
+          <div style="min-height: 1200px;">
+            <img
+              src="./images/lockscreen-guardian.png"
+              alt="Android issue with lockscreen"
+              style="background: none; border: none; box-shadow: none; margin-top: 100px;"
+            />
+            <img
+              class="fragment"
+              src="./images/facetime-nyt.png"
+              alt="FaceTime issue"
+              style="background: none; border: none; box-shadow: none; margin-top: 200px;"
+            />
+            <img
+              class="fragment"
+              id="navigation-hell"
+              alt="Navigation hell"
+              src="./images/navigation-hell.gif"
+              onclick="resetGif()"
+            />
+          </div>
           <script>
             function resetGif() {
               document.getElementById('navigation-hell').setAttribute('src', '');
