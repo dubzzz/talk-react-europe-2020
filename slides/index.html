@@ -345,20 +345,6 @@
         <section class="unexpected-examples" data-fragment="-1">
           <aside class="notes">
             <p>Unexpected issues: You're not alone!</p>
-            <p>Story:
-              <br/>Look at Paris, But leave there,
-              <br/>Looked for stays in London, Pretty good ones, see!,
-              <br/>Arf..
-            </p>
-            <p>
-              UI Bug not critical?
-              <br/>Imagine Favorite Shopping website (when you pay, you have another price)
-              <br/>Imagine Bank Account
-              <br/>Imagine Issue Tracking solution
-            </p>
-            <p>
-              What could go wrong in the front?
-            </p>
           </aside>
           <style>
             section.present.unexpected-examples:not([data-fragment="-1"]) img:not(.fragment),
@@ -378,14 +364,31 @@
               alt="FaceTime issue"
               style="background: none; border: none; box-shadow: none; margin-top: 200px;"
             />
-            <img
-              class="fragment"
-              id="navigation-hell"
-              alt="Navigation hell"
-              src="./images/navigation-hell.gif"
-              onclick="resetGif()"
-            />
           </div>
+        </section>
+        <section>
+          <aside class="notes">
+            <p>Story:
+              <br/>Look at Paris, But leave there,
+              <br/>Looked for stays in London, Pretty good ones, see!,
+              <br/>Arf..
+            </p>
+            <p>
+              UI Bug not critical?
+              <br/>Imagine Favorite Shopping website (when you pay, you have another price)
+              <br/>Imagine Bank Account
+              <br/>Imagine Issue Tracking solution
+            </p>
+            <p>
+              What could go wrong in the front?
+            </p>
+          </aside>
+          <img
+            id="navigation-hell"
+            alt="Navigation hell"
+            src="./images/navigation-hell.gif"
+            onclick="resetGif()"
+          />
           <script>
             function resetGif() {
               document.getElementById('navigation-hell').setAttribute('src', '');
